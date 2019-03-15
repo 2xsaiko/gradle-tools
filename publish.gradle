@@ -4,9 +4,9 @@ apply plugin: 'maven-publish'
 publishing {
   publications {
     maven(MavenPublication) {
-      String gid = System.getProperty("PUBLISH_GROUP", project.group.toString())
-      String aid = System.getProperty("PUBLISH_ARTIFACT", project.archivesBaseName)
-      String buildid = System.getProperty("PUBLISH_BUILD")
+      String gid = System.getenv("PUBLISH_GROUP") ?: project.group.toString()
+      String aid = System.getenv("PUBLISH_ARTIFACT") ?: project.archivesBaseName
+      String buildid = System.getenv("PUBLISH_BUILD")
 
       groupId = gid
       artifactId = aid
@@ -19,7 +19,7 @@ publishing {
       from components.java
     }
   }
-  String mavenUrl = System.getProperty("PUBLISH_REPO")
+  String mavenUrl = System.getenv("PUBLISH_REPO")
   if (mavenUrl != null) {
     repositories {
       maven {
