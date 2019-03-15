@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      String gid = System.getProperty("PUBLISH_GROUP", project.group.toString())
+      String aid = System.getProperty("PUBLISH_ARTIFACT", project.archivesBaseName)
+      String buildid = System.getProperty("PUBLISH_BUILD")
+
+      groupId = gid
+      artifactId = aid
+      version = project.version.toString()
+
+      if (buildid != null) {
+        version += "-$buildid"
+      }
+
+      from components.java
+    }
+  }
+  String mavenUrl = System.getProperty("PUBLISH_REPO")
+  if (mavenUrl != null) {
+    repositories {
+      maven {
+        url = mavenUrl
+      }
+    }
+  }
+}
