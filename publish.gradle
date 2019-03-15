@@ -4,21 +4,22 @@ apply plugin: 'maven-publish'
 String gid = System.getenv("PUBLISH_GROUP") ?: project.group.toString()
 String aid = System.getenv("PUBLISH_ARTIFACT") ?: project.archivesBaseName
 String buildid = System.getenv("PUBLISH_BUILD")
+String ver = project.version.toString()
 String mavenUrl = System.getenv("PUBLISH_REPO")
 
-println("publish: $gid:$aid:$buildid")
-println("maven repo path: $mavenUrl")
+if (buildid != null) {
+  ver += "-$buildid"
+}
+
+println("publish: $gid:$aid:$ver")
+println("maven repo path: ${mavenUrl ?: "<unset>"}")
 
 publishing {
   publications {
     maven(MavenPublication) {
       groupId = gid
       artifactId = aid
-      version = project.version.toString()
-
-      if (buildid != null) {
-        version += "-$buildid"
-      }
+      version = ver
 
       from components.java
     }
