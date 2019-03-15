@@ -14,6 +14,11 @@ if (buildid != null) {
 println("publish: $gid:$aid:$ver")
 println("maven repo path: ${mavenUrl ?: "<unset>"}")
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
 publishing {
   publications {
     maven(MavenPublication) {
@@ -21,7 +26,12 @@ publishing {
       artifactId = aid
       version = ver
 
-      from components.java
+      artifact(jar, {
+        builtBy remapJar
+      })
+      artifact(sourcesJar, {
+        builtBy remapSourcesJar
+      })
     }
   }
   if (mavenUrl != null) {
