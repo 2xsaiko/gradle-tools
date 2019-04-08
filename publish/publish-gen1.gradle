@@ -21,7 +21,7 @@ publishing {
       artifactId = aid
       version = ver
 
-      from components.java
+      artifact(jar)
       artifact(sourcesJar)
     }
   }
