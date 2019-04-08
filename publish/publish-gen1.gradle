@@ -8,28 +8,28 @@ String ver = project.version.toString()
 String mavenUrl = System.getenv("PUBLISH_REPO")
 
 if (buildid != null) {
-  ver += "-$buildid"
+    ver += "-$buildid"
 }
 
 println("publish: $gid:$aid:$ver")
 println("maven repo path: ${mavenUrl ?: "<unset>"}")
 
 publishing {
-  publications {
-    maven(MavenPublication) {
-      groupId = gid
-      artifactId = aid
-      version = ver
+    publications {
+        maven(MavenPublication) {
+            groupId = gid
+            artifactId = aid
+            version = ver
 
-      artifact(jar)
-      artifact(sourcesJar)
+            from components.java
+            artifact sourcesJar
+        }
     }
-  }
-  if (mavenUrl != null) {
-    repositories {
-      maven {
-        url = mavenUrl
-      }
+    if (mavenUrl != null) {
+        repositories {
+            maven {
+                url = mavenUrl
+            }
+        }
     }
-  }
 }
