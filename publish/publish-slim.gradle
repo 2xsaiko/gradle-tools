@@ -6,12 +6,13 @@ String mavenUrl = System.getenv("PUBLISH_REPO")
 println("maven repo path: ${mavenUrl ?: "<unset>"}")
 
 publishing {
-  publications {
-  if (mavenUrl != null) {
-    repositories {
-      maven {
-        url = mavenUrl
-      }
+    publications {
+        if (mavenUrl != null) {
+            repositories {
+                maven {
+                    url = mavenUrl
+                }
+            }
+        }
     }
-  }
 }
