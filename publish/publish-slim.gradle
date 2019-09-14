@@ -1,17 +1,22 @@
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
+String buildid = System.getenv("PUBLISH_BUILD")
 String mavenUrl = System.getenv("PUBLISH_REPO")
 
 println("maven repo path: ${mavenUrl ?: "<unset>"}")
 
 publishing {
     publications {
-        if (mavenUrl != null) {
-            repositories {
-                maven {
-                    url = mavenUrl
-                }
+        all {
+            version += "-$buildid"
+        }
+    }
+
+    if (mavenUrl != null) {
+        repositories {
+            maven {
+                url = mavenUrl
             }
         }
     }
