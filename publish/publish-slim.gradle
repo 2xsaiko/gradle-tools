@@ -9,7 +9,9 @@ println("maven repo path: ${mavenUrl ?: "<unset>"}")
 publishing {
     publications {
         all {
-            version += "-$buildid"
+            if (buildid != null) {
+                version += "-$buildid"
+            }
         }
     }
 
